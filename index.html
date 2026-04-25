@@ -153,8 +153,8 @@
     }
     /* Stack order: hero (back) → mid row → low row → bottom capsule (front).
        Each layer overlaps the one beneath it for a tactile, layered feel. */
-    .hero   { left: 18%; top: 6%;    z-index: 3;  }
-    .bottom { left: 18%; bottom: 6%; z-index: 12; }
+    .hero   { left: 18%; top: 4%;    z-index: 3;  }
+    .bottom { left: 18%; bottom: 2.4%; z-index: 12; }
 
     .hero h2,
     .bottom h3 { font-size: clamp(1.3rem, 0.85rem + 1.7vw, 2.5rem); letter-spacing: -0.05em; }
@@ -172,16 +172,16 @@
 
     /* mid row — 3 SMALLER circles, evenly spaced under the hero.
        Centers (as % of canvas width): 25%, 50%, 75%. Width = 22%. */
-    .left-mid   { left: 14%; top: 18%; width: 22%; z-index: 5; }
-    .center-mid { left: 39%; top: 18%; width: 22%; z-index: 5; }
-    .right-mid  { left: 64%; top: 18%; width: 22%; z-index: 5; }
+    .left-mid   { left: 17%; top: 21%; width: 22%; z-index: 5; }
+    .center-mid { left: 39%; top: 21%; width: 22%; z-index: 5; }
+    .right-mid  { left: 61%; top: 21%; width: 22%; z-index: 5; }
 
     /* low row — 2 circles aligned with the GAPS between the top 3.
        Gap centers sit at 37.5% and 62.5% of the canvas. Width matches mid
        row (22%) for a consistent rhythm; left = center - 11%. */
-    /* Low row pulled up so it overlaps the mid row, sitting in front of it. */
-    .left-low  { left: 26.5%; top: 41%; width: 22%; z-index: 9; }
-    .right-low { left: 51.5%; top: 41%; width: 22%; z-index: 9; }
+    /* Low row positioned so circles tangentially meet the mid row. */
+    .left-low  { left: 28%; top: 48.6%; width: 22%; z-index: 9; }
+    .right-low { left: 50%; top: 48.6%; width: 22%; z-index: 9; }
 
     /* Tints live ONLY on the rim. Bodies stay clear glass.
        Conic gradients sweep green and purple around the full ring. */
