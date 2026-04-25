@@ -49,15 +49,16 @@
       overflow: hidden;
     }
 
+    /* Frame locks the layout's natural aspect ratio (width : height = 100 : 71)
+       so every bubble's tangent geometry stays correct at every viewport. */
     .frame {
       position: relative;
-      width: 100%;
+      width: min(100%, calc((100dvh - clamp(16px, 4vw, 48px)) / 0.71));
       max-width: 1120px;
-      /* Fill the available viewport height, leaving room for body padding */
-      height: calc(100dvh - clamp(16px, 4vw, 48px));
-      max-height: 820px;
+      aspect-ratio: 100 / 71;
+      max-height: calc(100dvh - clamp(16px, 4vw, 48px));
       background: transparent;
-      overflow: hidden;
+      overflow: visible;
       isolation: isolate;
     }
 
@@ -65,6 +66,7 @@
       position: relative;
       width: 100%;
       height: 100%;
+      container-type: size;
     }
 
     .node {
@@ -124,40 +126,39 @@
     .node h2,
     .node h3 {
       margin: 0;
-      font-size: clamp(0.78rem, 0.55rem + 1.05vw, 1.5rem);
+      font-size: clamp(0.78rem, 1.6cqw, 1.5rem);
       line-height: 1.08;
       letter-spacing: -0.04em;
       font-weight: 700;
     }
 
     .node p {
-      margin: clamp(4px, 0.8cqh, 8px) 0 0;
-      font-size: clamp(0.72rem, 0.55rem + 0.45vw, 0.95rem);
+      margin: clamp(3px, 0.6cqw, 8px) 0 0;
+      font-size: clamp(0.7rem, 1.05cqw, 0.95rem);
       color: var(--muted);
       line-height: 1.3;
     }
 
-    /* ---- Layout: every dimension is % of the canvas, so the whole
-       composition scales with the viewport. Heights use cqh (canvas
-       height units) so nodes stay proportional vertically too.        */
-    .canvas { container-type: size; }
+    /* ---- Layout: every dimension is in cqw (% of canvas WIDTH) so the
+       geometry stays rigid regardless of viewport aspect ratio. The frame
+       enforces a 100:71 aspect, giving each bubble a predictable touch point. */
 
     /* Hero & bottom capsule share identical geometry so the headline
        “Neurodigital Design” and “Design with manners” feel like a matched pair. */
     .hero,
     .bottom {
-      width: 64%;
-      height: 17cqh;
+      width: 64cqw;
+      height: 13cqw;
+      left: 18cqw;
       border-radius: 999px;
       background: linear-gradient(180deg, rgba(255,255,255,0.22), rgba(255,255,255,0.08));
     }
-    /* Stack order: hero (back) → mid row → low row → bottom capsule (front).
-       Each layer overlaps the one beneath it for a tactile, layered feel. */
-    .hero   { left: 18%; top: 4%;    z-index: 3;  }
-    .bottom { left: 18%; bottom: 2.4%; z-index: 12; }
+    /* Stack order: hero (back) → mid row → low row → bottom capsule (front). */
+    .hero   { top: 4cqw;     z-index: 3;  }
+    .bottom { top: 58.05cqw; z-index: 12; }
 
     .hero h2,
-    .bottom h3 { font-size: clamp(1.3rem, 0.85rem + 1.7vw, 2.5rem); letter-spacing: -0.05em; }
+    .bottom h3 { font-size: clamp(1.2rem, 2.6cqw, 2.5rem); letter-spacing: -0.05em; }
 
     /* The 5 middle nodes are perfect circles. */
     .left-mid,
@@ -165,23 +166,21 @@
     .right-mid,
     .left-low,
     .right-low {
-      aspect-ratio: 1 / 1;
+      width: 22cqw;
+      height: 22cqw;
       border-radius: 50%;
-      height: auto;
     }
 
-    /* mid row — 3 SMALLER circles, evenly spaced under the hero.
-       Centers (as % of canvas width): 25%, 50%, 75%. Width = 22%. */
-    .left-mid   { left: 17%; top: 21%; width: 22%; z-index: 5; }
-    .center-mid { left: 39%; top: 21%; width: 22%; z-index: 5; }
-    .right-mid  { left: 61%; top: 21%; width: 22%; z-index: 5; }
+    /* Mid row — 3 circles in a row, each touching its neighbor.
+       Centers at 28, 50, 72 cqw (spacing = 22 cqw = diameter). */
+    .left-mid   { left: 17cqw; top: 17cqw; z-index: 5; }
+    .center-mid { left: 39cqw; top: 17cqw; z-index: 5; }
+    .right-mid  { left: 61cqw; top: 17cqw; z-index: 5; }
 
-    /* low row — 2 circles aligned with the GAPS between the top 3.
-       Gap centers sit at 37.5% and 62.5% of the canvas. Width matches mid
-       row (22%) for a consistent rhythm; left = center - 11%. */
-    /* Low row positioned so circles tangentially meet the mid row. */
-    .left-low  { left: 28%; top: 48.6%; width: 22%; z-index: 9; }
-    .right-low { left: 50%; top: 48.6%; width: 22%; z-index: 9; }
+    /* Low row — 2 circles in the gaps between the top 3, each tangent to two mid circles.
+       Vertical offset = diameter × √3/2 ≈ 19.05 cqw, so top = 17 + 19.05 = 36.05 cqw. */
+    .left-low  { left: 28cqw; top: 36.05cqw; z-index: 9; }
+    .right-low { left: 50cqw; top: 36.05cqw; z-index: 9; }
 
     /* Tints live ONLY on the rim. Bodies stay clear glass.
        Conic gradients sweep green and purple around the full ring. */
@@ -303,7 +302,7 @@
         <span class="glow"></span>
         <div class="inner">
           <h2>Neurodigital Design</h2>
-          <p>Behavior, cognition, and brand experience fused into one interface philosophy.</p>
+          <p>Creative approach efficient for people, effective for business.</p>
         </div>
       </article>
 
